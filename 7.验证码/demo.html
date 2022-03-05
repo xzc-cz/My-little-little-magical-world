@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 网页的所有内容 -->
+
+<head>
+    <!-- 网页的基本信息 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册登录</title>
+    <!--网页的名字  -->
+    <style>
+        /*装修公司 : 1找标签 2 对标签 样式的 装修  */
+        
+        body {
+            margin: 0;
+            background: url(./img/timg.jpg);
+            background-size: cover;
+        }
+        
+        h2 {
+            margin: 0;
+        }
+        
+        input {
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+        
+        .login {
+            width: 400px;
+            /* 宽度: 400像素;长度单位 */
+            /* height: 300px; */
+            /* 高度 */
+            /* margin: 100px; */
+            /* 外边距 */
+            margin: 100px auto;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, .8);
+            /* 背景颜色 */
+            /* opacity: .6; */
+            border-radius: 10px;
+        }
+        
+        .login h2 {
+            color: #fff;
+            /* 文字变白 */
+            text-align: center;
+            /* 文本水平居中 */
+            margin-bottom: 30px;
+            /* 下外边距 */
+        }
+        
+        .inputbox {
+            position: relative;
+            /* 相对定位 */
+            margin: 20px 0;
+        }
+        
+        .inputbox input {
+            width: 100%;
+            border-bottom: 1px solid #fff;
+            color: #fff;
+        }
+        
+        .inputbox label {
+            position: absolute;
+            /* 定位 */
+            /* top上 bottom下 left左 right右 */
+            top: 0;
+            left: 0;
+            color: red;
+            transition: all 0.6s;
+            pointer-events: none;
+            /* 看的见摸不着 */
+        }
+        
+        .inputbox input:focus~label,
+        .inputbox input:valid~label {
+            top: -18px;
+            left: 0;
+            color: #03a9f4;
+            font-size: 12px;
+        }
+        
+        input[type="submit"] {
+            color: #fff;
+            background: #03a9f4;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        
+        #item {
+            width: 200px;
+            height: 50px;
+        }
+        
+        #input {
+            width: 100px
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="login">
+        <h2>Login</h2>
+        <form action="">
+            <div class="inputbox">
+                <input type="text" required>
+                <label>usename</label>
+            </div>
+            <div class="inputbox">
+                <input type="password" required>
+                <label>password</label>
+            </div>
+            <div id="item"></div>
+            <div class="inputbox">
+                <input type="text" id="input" required>
+                <label>verify</label>
+            </div>
+            <input type="submit" id="button" value="submit">
+            <a id="a" href="wrap.html"></a>
+        </form>
+    </div>
+</body>
+<script src="js/gVerify.js"></script>
+<script>
+    //新建一个图形验证码对象，以item对象为参数
+    var Item = new GVerify("item");
+    //调用到button类 存入到Btn中
+    var Btn = document.getElementById("button")
+    var Int = document.getElementById("input")
+        //给Btn添加点击事件
+    console.log(Int)
+    console.log(Item)
+    Btn.onclick = function() {
+        //验证input中输入的值和Item中给的随机值是否一致
+        var res = Item.validate(Int.value);
+        if (res) {
+            alert("验证正确")
+            window.location.href = "wrap.html"
+        } else {
+            Item = new GVerify("item");
+            alert("验证码错误");
+        }
+    }
+</script>
+
+</html>
