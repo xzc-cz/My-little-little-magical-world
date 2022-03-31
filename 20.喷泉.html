@@ -1,0 +1,111 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我爱你喷泉</title>
+
+
+<style>
+html, body{
+  background: #000;
+  width: 100%;
+  padding: 0;overflow: hidden;
+}</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<script>
+// shim layer with setTimeout fallback
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+
+var anim = {
+
+	init: function(){
+		var canvas 		=document.getElementById('c');
+		canvas.width 	= window.innerWidth;
+		canvas.height 	= window.innerHeight;
+		this.c 			= canvas.getContext('2d');
+		this.letters 	= "我爱你";
+		this.gravity 	= 0.1;
+    this.maxParticles = 100;
+		this.cw			= canvas.width,
+		this.ch			= canvas.height,
+		this.particles	= []
+	},
+
+	render: function(){
+		this.fadeCanvas();
+
+		var particle = {
+			  x: 		anim.cw/2, 
+		    y: 		anim.ch,
+		    xSpeed: (Math.random()*20)-10,
+		    ySpeed: (Math.random()*20)-10,
+		    size: 	10,
+		    character: anim.letters[Math.floor( Math.random() * anim.letters.length )],
+		    color: 	[155, 100, 50, .7]
+		}
+
+		this.particles.push(particle);
+    this.tidyParticles();
+		this.drawParticles();
+	},
+
+	drawParticles: function(){
+		var paritcleCount = this.particles.length;
+		var c = this.c;
+    for(var i=0; i < paritcleCount; i++){
+		    var particle = this.particles[i];
+        var h = particle.color[0],
+            s = particle.color[1] + '%',
+            l = particle.color[2] + '%',
+            a = particle.color[3];
+      
+        var hsla = 'hsla(' + h + ',' + s + ',' + l + ',' + a + ')';
+      
+		    c.font = "12px sans-serif";
+		    c.fillStyle = hsla;
+		    c.fillText(particle.character, particle.x, particle.y);
+		  
+		    particle.x += particle.xSpeed;
+		    particle.y += particle.ySpeed;
+		    particle.size *= 0.96;
+		    particle.y *= 0.98;
+        particle.color[2] *= 0.99;
+        particle.color[0] += 1;
+        if(particle.color[0] > 253){
+          particle.color[2] = 100;
+          particle.color[3] = 1;
+        }
+    }
+	},
+  
+  tidyParticles: function(){
+    if( this.particles.length > this.maxParticles ){
+      this.particles.shift();
+    }
+  },
+
+	fadeCanvas: function(){
+		this.c.fillStyle = 'rgba(0,0,0,0.1)';
+  		this.c.fillRect(0, 0, this.cw, this.ch);
+	}
+}
+
+anim.init();
+(function animloop(){
+  requestAnimFrame(animloop);
+  anim.render();
+})();</script>
+
+</body>
+</html>
